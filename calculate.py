@@ -23,8 +23,12 @@ def calculate(data):
     if data["type"]=="l":
         factor=factorsTS[decode[data["definition"]]]
         co2temp=data["value"]*factor
-        getref(id,"f")
-        setref(id,co2temp,time,"f")
+        refL, refTime = getref(id,"f")
+        co2val=None
+        if refL==None:
+            setref(id,co2temp,time,"f")
+        elif time > refTime:
+            co2val=refL/(time-refTime)
     elif data["type"]=="kwh":
         val=calcEnergy(id, data["value"], time)
         if val == None:
