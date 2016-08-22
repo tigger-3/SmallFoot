@@ -1,3 +1,10 @@
+import os
+
+if os.path.isfile("password") and os.path.isfile("user"):
+
+    password = open("password", "r").read()
+    user = open("user", "r").read()
+
 factorsF = {"benzin": 2.33, "diesel": 2.64, "lpg": 1.64}
 factorsE = 0.58
 decode = ["benzin", "diesel", "lpg"]
@@ -17,12 +24,12 @@ def main():
 def saveinrank(id, co2val, type):
     co2perts = co2val * timespan
     if type == "e":
-        # write
+        # todo write
         pass
     elif type == "f":
-        # write
+        # todo write
         pass
-        # calculate added values
+    # todo calculate added values
 
 
 def crawlinput():
@@ -70,7 +77,7 @@ def getref(id, typ):
     data = crawlref(id)
     val = None
     time = None
-    # todo crawl
+    # to#do crawl
     if typ == "e":
         val = data["kwh"]
         time = data["timekwh"]
