@@ -1,17 +1,25 @@
 factorsTS={"benzin":2.33,"diesel":2.64,"lpg":1.64}
 factorsE=0.58
 decode = ["benzin","diesel","lpg"]
+timespan = 360 #Days
+
 
 def main():
     datalist=crawlinput()
     #to#do auflösen der datalist
     for i in datalist:
         data=calculate(i)
+        #to#do evtl data type (data[3]) auflösen
         if data[2] != None:
-            saveinrank(data[0],data[1],data[2],data[3])
+            saveinrank(data[0],data[2],data[3])
 
-def saveinrank(id, time, co2val, type):
-
+def saveinrank(id, co2val, type):
+    co2perts = co2val * timespan
+    if type="e":
+        
+    elif type = "f":
+        
+    #calculate added values
 
 def crawlinput():
     alllist=[] #todo crawl here
@@ -20,7 +28,8 @@ def crawlinput():
 def calculate(data):
     id = data["ID"]
     time = data["time"]
-    if data["type"]=="l":
+    datatype = data["type"]
+    if datatype=="f": ##fuel
         factor=factorsTS[decode[data["definition"]]]
         co2temp=data["value"]*factor
         refL, refTime = getref(id,"f")
@@ -29,7 +38,7 @@ def calculate(data):
             setref(id,co2temp,time,"f")
         elif time > refTime:
             co2val=refL/(time-refTime)
-    elif data["type"]=="kwh":
+    elif datatype=="e": ##energy
         val=calcEnergy(id, data["value"], time)
         if val == None:
             co2val=None
@@ -37,7 +46,7 @@ def calculate(data):
             co2val=val*factorsE
     else:
         co2val=None
-    return id, time, co2val, data["type"]
+    return id, time, co2val, datatype
 
 def calcEnergy(id, ZS, time):
     refZS, refTime = getref(id, "e")
@@ -51,6 +60,7 @@ def calcEnergy(id, ZS, time):
     return verbrauch #to#do safe if v = 0
 
 def getref(id, typ):
+    data = crawlref(id)
     val = None
     time = None
     #todo crawl
